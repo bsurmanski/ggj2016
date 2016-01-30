@@ -1,0 +1,6 @@
+cpplib/test/test
+cpplib/test/sample
+cpplib/test/res
+*.o
+*.so
+.tup
