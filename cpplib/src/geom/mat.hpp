@@ -22,6 +22,8 @@ class Mat4 {
     Mat4 mul(const Mat4 &o) const;
     Vec4 mul(const Vec4 &o) const;
 
+    Mat4 invertOrthogonalMat3() const;
+
     Mat4 translated(const Vec4 &dv) const;
     Mat4 rotated(float angle, const Vec4 &axis) const;
     Mat4 scaled(float x, float y, float z) const;

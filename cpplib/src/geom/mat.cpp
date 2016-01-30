@@ -84,6 +84,28 @@ Vec4 Mat4::mul(const Vec4 &o) const {
     return ret;
 }
 
+// Invert the orthogonal 3x3 matrix inside this 4x4 matrix (3x3 from indices 0
+// to 2). The matrix must be orthogonal with determinant of 1 or this will not work.
+Mat4 Mat4::invertOrthogonalMat3() const {
+  // Taken from:
+  // http://mathworld.wolfram.com/MatrixInverse.html
+  Mat4 invA;
+  // Column 1
+  invA.set(0, 0, get(1, 1) * get(2, 2) - get(2, 1) * get(1, 2));
+  invA.set(1, 0, get(1, 2) * get(2, 0) - get(2, 2) * get(1, 0));
+  invA.set(2, 0, get(1, 0) * get(2, 1) - get(2, 0) * get(1, 1));
+
+  invA.set(0, 1, get(0, 2) * get(2, 1) - get(2, 2) * get(0, 1));
+  invA.set(1, 1, get(0, 0) * get(2, 2) - get(2, 0) * get(0, 2));
+  invA.set(2, 1, get(0, 1) * get(2, 0) - get(2, 1) * get(0, 0));
+
+  invA.set(0, 2, get(0, 1) * get(1, 2) - get(1, 1) * get(0, 2));
+  invA.set(1, 2, get(0, 2) * get(1, 0) - get(1, 2) * get(0, 0));
+  invA.set(2, 2, get(0, 0) * get(1, 1) - get(1, 0) * get(0, 1));
+
+  return invA;
+}
+
 Mat4 Mat4::translated(const Vec4 &dv) const {
     Mat4 m;
     m.set(3, 0, dv[0]);
