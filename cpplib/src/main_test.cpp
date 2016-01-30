@@ -1,5 +1,9 @@
-#include <iostream>
 #include "ring_automaton.hpp"
+
+#include <unistd.h>
+
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -20,12 +24,38 @@ class GOLRing : public RingAutomaton {
   }
 };
 
+std::vector<std::vector<bool>> space_ship = {
+  {0, 1, 0, 0, 1},
+  {1, 0, 0, 0, 0},
+  {1, 0, 0, 0, 1},
+  {1, 1, 1, 1, 0},
+};
+
 int main() {
-  GOLRing a(5, 5);
-  a.RandomState();
-  for (int i = 0; i < 10; ++i) {
-    cout << a.GetDebugString() << endl;
+  const int width = 30;
+  const int height = 15;
+  const int number_generations = 10;
+  const unsigned int period = 100000;
+  GOLRing a(width, height);
+  const int cx = 0;
+  const int cy = 5;
+  for (int i = 0; i < space_ship.size(); ++i) {
+    for (int j = 0; j < space_ship[i].size(); ++j) {
+      a.SetCell(j + cx, i + cy, space_ship[i][j]);
+    }
+  }
+  for (int g = 0; g < number_generations; ++g) {
+    cout << "{ ";
+    for (int i = 0; i < a.GetWidth(); ++i) {
+      for (int j = 0; j < a.GetHeight(); ++j) {
+        if (a.GetCell(i, j)) {
+          Vec4 spherical_coordinate = a.GetCellSphereCoordinate(i, j);
+          cout << "{ " << spherical_coordinate.x << ", " << spherical_coordinate.y << ", " << spherical_coordinate.z << "},";
+          cout << endl;
+        }
+      }
+    }
+    cout << "},";
     a.Poll();
-    cout << "---------------------" << endl;
   }
 }
