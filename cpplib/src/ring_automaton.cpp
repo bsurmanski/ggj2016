@@ -68,7 +68,7 @@ std::string RingAutomaton::GetDebugString() const {
       if (GetCell(i, j)) {
         s += "*";
       } else {
-        s += " ";
+        s += "_";
       }
     }
     s += "\n";
@@ -78,11 +78,11 @@ std::string RingAutomaton::GetDebugString() const {
 
 int RingAutomaton::GetNumberNeighbors(const int x, const int y) const {
   int counter = 0;
-  for (int i = x - 1; i < x + 1; ++i) {
-    for (int j = y - 1; j < y + 1; ++j) {
+  for (int i = x - 1; i <= x + 1; ++i) {
+    for (int j = y - 1; j <= y + 1; ++j) {
       // Skip cases where the height is negative or greater than the heigh of
       // the map.
-      if ((j > grid_->getHeight()) || (j < 0)) {
+      if ((j >= grid_->getHeight()) || (j < 0)) {
         continue;
       }
       // Skip (x, y), that's us silly, not a neighbor.

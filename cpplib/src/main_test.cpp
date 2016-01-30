@@ -23,8 +23,9 @@ class GOLRing : public RingAutomaton {
 int main() {
   GOLRing a(5, 5);
   a.RandomState();
-  cout << a.GetDebugString() << endl;
-  cout << "next iter: " << endl;
-  a.Poll();
-  cout << a.GetDebugString() << endl; 
+  for (int i = 0; i < 10; ++i) {
+    cout << a.GetDebugString() << endl;
+    a.Poll();
+    cout << "---------------------" << endl;
+  }
 }
