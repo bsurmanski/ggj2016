@@ -21,6 +21,8 @@ class DrawDevice {
     Program *simpleProgram;
     Program *deferredProgram;
     Program *meshProgram;
+    Program *skyboxProgram;
+    Program *titleProgram;
 
     Mesh *quad;
     Mesh *cube;
@@ -38,6 +40,8 @@ class DrawDevice {
     void runMeshProgram(Mesh *m, Texture *t, const Mat4 &mv);
     void runOutputProgram();
     void runSimpleProgram(Mesh *m, Texture *t, const Mat4 &mv);
+    void runSkyboxProgram(Texture *day, Texture *night, const Mat4 &v, const Vec4 &sun);
+    void runTitleProgram(Texture *title, Texture *space, float tick);
     void test();
 };
 

@@ -1,23 +1,13 @@
 #version 130
-#extension GL_ARB_uniform_buffer_object : enable
-#extension GL_ARB_explicit_attrib_location : require
 
-//smooth in vec4 fcolor;
-smooth in vec4 fposition;
-smooth in vec4 fnormal;
-smooth in vec3 fuv;
+smooth in vec2 fuv; 
+uniform sampler2D t_day;
+uniform sampler2D t_night; 
 
-uniform samplerCube t_color;
+uniform vec3 eye; 
+uniform vec3 sun;
 
-layout(location = 0) out vec4 outColor;
-layout(location = 1) out vec4 outNormal; 
-layout(location = 2) out vec4 outPosition;
-layout(location = 3) out vec4 outLight; // mess!
-
-void main()
-{
-    outColor = texture(t_color, -fuv);
-    outNormal = fnormal;
-    outPosition = fposition;
-    outLight = vec4(1.0, 1.0, 1.0, 0);
+void main(void) {
+    vec4 c = texture2D(t_night, fuv); 
+    gl_FragColor = c;
 }

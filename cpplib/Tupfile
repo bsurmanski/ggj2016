@@ -19,6 +19,7 @@ SRC=src/geom/ball.cpp\
     src/draw/gl/drawDevice.cpp\
     src/draw/scene.cpp\
     src/entity/entity.cpp\
+    src/ring_automaton.cpp\
     src/object.cpp
 
 # test files
@@ -28,7 +29,7 @@ TST=test/ball_test.cpp\
     test/mat_test.cpp\
     test/string_test.cpp
 
-CXXFLAGS=-Isrc -g -O0 -fPIC
+CXXFLAGS=-Isrc -g -O0 -fPIC --std=c++11
 LDFLAGS=-shared -lGL -lSDL -lGLEW
 EXE=bslib.so
 TESTEXE=test/test

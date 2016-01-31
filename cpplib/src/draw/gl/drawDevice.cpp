@@ -19,9 +19,9 @@ DrawDevice::DrawDevice(int _w, int _h) : w(_w), h(_h) {
     if(!instance) instance = this;
    
     mainBuffer = new Framebuffer();
-    colorTexture = new RGBATexture(_w/2, _h/2);
-    normalTexture = new RGBATexture(_w/2, _h/2);
-    depthTexture = new DepthTexture(_w/2, _h/2);
+    colorTexture = new RGBATexture(_w/4, _h/4);
+    normalTexture = new RGBATexture(_w/4, _h/4);
+    depthTexture = new DepthTexture(_w/4, _h/4);
 
     mainBuffer->addTarget(colorTexture);
     mainBuffer->addTarget(normalTexture);
@@ -39,6 +39,18 @@ DrawDevice::DrawDevice(int _w, int _h) : w(_w), h(_h) {
     delete deferredvs;
     delete deferredfs;
 
+    File *skyboxvs = new File("res/glsl/skybox.vs");
+    File *skyboxfs = new File("res/glsl/skybox.fs");
+    skyboxProgram = new StdProgram(skyboxvs, skyboxfs);
+    delete skyboxvs;
+    delete skyboxfs;
+
+    File *titlevs = new File("res/glsl/title.vs");
+    File *titlefs = new File("res/glsl/title.fs");
+    titleProgram = new StdProgram(titlevs, titlefs);
+    delete titlevs;
+    delete titlefs;
+
     File *meshvs = new File("res/glsl/mesh.vs");
     File *meshfs = new File("res/glsl/mesh.fs");
     meshProgram = new StdProgram(meshvs, meshfs);
@@ -46,7 +58,7 @@ DrawDevice::DrawDevice(int _w, int _h) : w(_w), h(_h) {
     delete meshfs;
 
     File *quadFile = new File("res/unit_quad.mdl");
-    File *cubeFile = new File("res/unit_cube.mdl");
+    File *cubeFile = new File("res/sky.msh");
     quad = loadMdl(quadFile);
     cube = loadMdl(cubeFile);
     delete quadFile;
@@ -101,7 +113,7 @@ void DrawDevice::clear() {
 
 void DrawDevice::clearFramebuffer() {
     mainBuffer->bind();
-    glViewport(0, 0, w/2, h/2); // framebuffer w/h?
+    glViewport(0, 0, w/4, h/4); // framebuffer w/h?
     glClear(GL_COLOR_BUFFER_BIT);
     glClear(GL_DEPTH_BUFFER_BIT);
 }
@@ -111,7 +123,7 @@ void DrawDevice::runMeshProgram(Mesh *mesh, Texture *tex, const Mat4 &mv) {
     mainBuffer->bind();
 
     tex->bind();
-    glViewport(0, 0, w/2, h/2);
+    glViewport(0, 0, w/4, h/4);
     simpleProgram->bind();
     mesh->bind();
     bindStandardAttributes(simpleProgram);
@@ -139,6 +151,44 @@ void DrawDevice::runOutputProgram() {
     glUniform1i(glGetUniformLocation(deferredProgram->program, "t_normal"), 1);
     glUniform1i(glGetUniformLocation(deferredProgram->program, "t_depth"), 2);
     glUniform1f(glGetUniformLocation(deferredProgram->program, "tick"), f);
+    quad->draw();
+}
+
+void DrawDevice::runSkyboxProgram(Texture *day, Texture *night, const Mat4 &v, const Vec4 &sun) {
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_FALSE);
+    mainBuffer->bind();
+
+    day->bind(0);
+    night->bind(1);
+    glViewport(0, 0, w/4, h/4);
+    skyboxProgram->bind();
+    cube->bind();
+    bindStandardAttributes(skyboxProgram);
+    Mat4 p_matrix = Mat4::createFrustumMatrix(-1, 1, -1, 1, 2, 1000);
+    Mat4 v_matrix = v;
+    glUniformMatrix4fv(glGetUniformLocation(skyboxProgram->program, "p_matrix"),
+                        1, GL_TRUE, p_matrix.ptr());
+    glUniformMatrix4fv(glGetUniformLocation(skyboxProgram->program, "v_matrix"),
+                        1, GL_TRUE, v_matrix.ptr());
+    glUniform1i(glGetUniformLocation(skyboxProgram->program, "t_day"), 0);
+    glUniform1i(glGetUniformLocation(skyboxProgram->program, "t_night"), 1);
+    cube->draw();
+    glDepthMask(GL_TRUE);
+}
+
+void DrawDevice::runTitleProgram(Texture *title, Texture *space, float tick) {
+    glDisable(GL_DEPTH_TEST);
+    mainBuffer->bind();
+
+    title->bind(0);
+    space->bind(1);
+    glViewport(0, 0, w/4, h/4);
+    titleProgram->bind();
+    bindStandardAttributes(titleProgram);
+    glUniform1i(glGetUniformLocation(titleProgram->program, "t_title"), 0);
+    glUniform1i(glGetUniformLocation(titleProgram->program, "t_space"), 1);
+    glUniform1f(glGetUniformLocation(titleProgram->program, "tick"), tick);
     quad->draw();
 }
 
