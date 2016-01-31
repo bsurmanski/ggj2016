@@ -21,6 +21,50 @@ Vec4 Vec4::createQuat(float angle, const Vec4 &axis) {
     return ret;
 }
 
+/*
+Vec4 Vec4::createQuat(const Vec4 &up, const Vec4 &fwd) {
+    Vec4 nup = up.normalized();
+    Vec4 nfwd = fwd.normalized();
+    Vec4 nright = nup.cross(nfwd);
+    Vec4 ret(0,0,0,0);
+
+    if(nup.x + nright.y > 0) {
+    }
+}
+*/
+
+Vec4 Vec4::createQuatFromMat(const Mat4 &o) {
+    float trace = o.get(0, 0) + o.get(1, 1) + o.get(2, 2);
+
+    Vec4 ret;
+    if(trace > 0.0f) {
+        float froot = sqrtf(trace + 1.0f);
+        ret.w = 0.5f * froot;
+        ret.x = (o.get(1, 2) - o.get(2, 1)) * froot;
+        ret.y = (o.get(2, 0) - o.get(0, 2)) * froot;
+        ret.z = (o.get(0, 1) - o.get(1, 0)) * froot;
+    } else {
+        static int snext[3] = {1, 2, 0};
+        int i = 0;
+        if(o.get(1, 1) > o.get(0, 0)) {
+            i = 1;
+        }
+        if(o.get(2, 2) > o.get(i, i)) {
+            i = 2;
+        }
+        int j = snext[i];
+        int k = snext[j];
+        float froot = sqrtf(o.get(i,i)-o.get(j,j)-o.get(k,k)+1.0f);
+        ret[i] = 0.5f*froot;
+        froot = 0.5f/froot;
+        ret.w = (o.get(j, k) - o.get(k, j)) * froot;
+        ret[j] = (o.get(i, j) + o.get(j, i)) * froot;
+        ret[k] = (o.get(i, k) + o.get(k, i)) * froot;
+    }
+
+    return ret;
+}
+
 Vec4 &Vec4::operator+=(const Vec4 &o) {
     x += o.x;
     y += o.y;

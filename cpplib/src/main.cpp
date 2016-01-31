@@ -38,9 +38,9 @@ void init() {
     scene->loadTextureFromFile("plant", "res/plant.tga");
 
     //moon = scene->addEntity("moon");
-    //planet = scene->addEntity("planet");
+    planet = scene->addEntity("planet");
     scene->addEntity("plant");
-    //planet->scale = Vec4(100, 100, 100);
+    planet->scale = Vec4(100, 100, 100);
 
     player_vector = Vec4(0, 1, 0, 0);
     player_forward = Vec4(0, 0, 1, 0);
@@ -70,6 +70,14 @@ void input() {
 
     if(keystate[SDLK_LEFT]) {
         Mat4 rot;
+        rot.rotate(-0.05, player_vector);
+        player_forward = rot.mul(player_forward);
+        player_forward.normalize();
+        player_forward.print();
+    }
+
+    if(keystate[SDLK_RIGHT]) {
+        Mat4 rot;
         rot.rotate(0.05, player_vector);
         player_forward = rot.mul(player_forward);
         player_forward.normalize();
@@ -85,21 +93,16 @@ void update() {
 
 void draw() {
     Mat4 vmat;
-    //Vec4 side = player_forward.cross(player_vector).normalized();
-    //vmat.setXVector(side);
-    //vmat.setYVector(player_vector);
-    //vmat.setZVector(player_forward);
-    //vmat = vmat.inverse();
- //   Vec4 player_position = player_vector.scaled(110);
-    //translation.translate(player_position.scaled(-1));
-    //vmat = vmat.translated(player_position);
-    //vmat.rotate(-0.5, Vec4(1, 0, 0));
-   // vmat.translate(player_position);
-   //
-    static float f =0.0f;
-    f+=0.01;
-    vmat.rotate(f, Vec4(1, 1, 0));
-   vmat.translate(Vec4(0, 0, -3));
+    Vec4 side = player_forward.cross(player_vector).normalized();
+    vmat.setXRow(side);
+    vmat.setYRow(player_vector);
+    vmat.setZRow(player_forward);
+
+    vmat.translate(Vec4(0, -115, 0));
+
+    Mat4 gaze;
+    gaze.rotate(0.6, Vec4(1, 0, 0));
+    vmat = gaze * vmat;
 
     drawDevice->clear();
     drawDevice->clearFramebuffer();

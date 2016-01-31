@@ -25,6 +25,8 @@ class Vec4 {
     Vec4();
     Vec4(float x, float y, float z, float w=0);
     static Vec4 createQuat(float angle, const Vec4 &axis);
+    static Vec4 createQuatFromMat(const Mat4 &o);
+    static Vec4 createQuat(const Vec4 &up, const Vec4 &fwd);
     Vec4 &operator+=(const Vec4 &o);
     Vec4 &operator-=(const Vec4 &o);
     Vec4 operator+(const Vec4 &o) const;

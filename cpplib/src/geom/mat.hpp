@@ -39,6 +39,11 @@ class Mat4 {
     void setZVector(Vec4 v);
     void setWVector(Vec4 v);
 
+    void setXRow(Vec4 v);
+    void setYRow(Vec4 v);
+    void setZRow(Vec4 v);
+    void setWRow(Vec4 v);
+
     void zero();
     void print();
 

@@ -33,5 +33,5 @@ void main()
     depth = texture(t_depth, fuv);
     light = texture(t_light, fuv);
     
-    outColor = normal; //color; //applyLighting(color, light);
+    outColor = color; //applyLighting(color, light);
 }

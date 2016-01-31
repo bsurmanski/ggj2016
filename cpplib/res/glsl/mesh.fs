@@ -17,7 +17,7 @@ layout(location = 3) out vec4 outLight; // mess!
 
 void main()
 {
-    outColor = texture(t_color, fuv);
+    outColor = vec4(1); //texture(t_color, fuv);
     outNormal = fnormal;
     outPosition = fposition;
     outLight = ambient;

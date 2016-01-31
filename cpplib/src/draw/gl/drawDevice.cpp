@@ -56,9 +56,9 @@ DrawDevice::DrawDevice(int _w, int _h) : w(_w), h(_h) {
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glEnable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);
+    glDisable(GL_SCISSOR_TEST);
     //glEnable(GL_CULL_TEST);
     glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_SCISSOR_TEST);
 }
 
 void DrawDevice::bindStandardAttributes(Program *prog) {

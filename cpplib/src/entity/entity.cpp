@@ -3,7 +3,8 @@
 Entity::Entity(GL::Mesh *_mesh, GL::Texture *_texture) : 
     mesh(_mesh), 
     texture(_texture),
-    scale(Vec4(1.0, 1.0, 1.0, 0.0)) {
+    scale(Vec4(1.0, 1.0, 1.0, 0.0)),
+    qrotation(Vec4(0, 0, 0, 1)) {
 }
 
 Mat4 Entity::getModelMatrix() {

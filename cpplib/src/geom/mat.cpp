@@ -206,6 +206,34 @@ void Mat4::setWVector(Vec4 v) {
     set(3, 3, v[3]);
 }
 
+void Mat4::setXRow(Vec4 v) {
+    set(0, 0, v[0]);
+    set(1, 0, v[1]);
+    set(2, 0, v[2]);
+    set(3, 0, v[3]);
+}
+
+void Mat4::setYRow(Vec4 v) {
+    set(0, 1, v[0]);
+    set(1, 1, v[1]);
+    set(2, 1, v[2]);
+    set(3, 1, v[3]);
+}
+
+void Mat4::setZRow(Vec4 v) {
+    set(0, 2, v[0]);
+    set(1, 2, v[1]);
+    set(2, 2, v[2]);
+    set(3, 2, v[3]);
+}
+
+void Mat4::setWRow(Vec4 v) {
+    set(0, 3, v[0]);
+    set(1, 3, v[1]);
+    set(2, 3, v[2]);
+    set(3, 3, v[3]);
+}
+
 void Mat4::zero() {
     for(int i = 0; i < 16; i++) {
         v[i] = 0.0f;
