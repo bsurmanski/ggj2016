@@ -26,6 +26,7 @@ class Scene {
     GL::Mesh *getMesh(const String &k);
     GL::Texture *getTexture(const String &k);
     Entity *addEntity(const String &k);
+    Entity *addEntity(const String &mk, const String &tk);
 
     void draw(GL::DrawDevice *dev, Mat4 vmat);
 };

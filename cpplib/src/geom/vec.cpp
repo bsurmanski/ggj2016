@@ -40,9 +40,9 @@ Vec4 Vec4::createQuatFromMat(const Mat4 &o) {
     if(trace > 0.0f) {
         float froot = sqrtf(trace + 1.0f);
         ret.w = 0.5f * froot;
-        ret.x = (o.get(1, 2) - o.get(2, 1)) * froot;
-        ret.y = (o.get(2, 0) - o.get(0, 2)) * froot;
-        ret.z = (o.get(0, 1) - o.get(1, 0)) * froot;
+        ret.x = (o.get(2, 1) - o.get(1, 2)) * froot;
+        ret.y = (o.get(0, 2) - o.get(2, 0)) * froot;
+        ret.z = (o.get(1, 0) - o.get(0, 1)) * froot;
     } else {
         static int snext[3] = {1, 2, 0};
         int i = 0;
@@ -57,9 +57,9 @@ Vec4 Vec4::createQuatFromMat(const Mat4 &o) {
         float froot = sqrtf(o.get(i,i)-o.get(j,j)-o.get(k,k)+1.0f);
         ret[i] = 0.5f*froot;
         froot = 0.5f/froot;
-        ret.w = (o.get(j, k) - o.get(k, j)) * froot;
-        ret[j] = (o.get(i, j) + o.get(j, i)) * froot;
-        ret[k] = (o.get(i, k) + o.get(k, i)) * froot;
+        ret.w = (o.get(k, j) - o.get(j, k)) * froot;
+        ret[j] = (o.get(j, i) + o.get(i, j)) * froot;
+        ret[k] = (o.get(k, i) + o.get(i, k)) * froot;
     }
 
     return ret;

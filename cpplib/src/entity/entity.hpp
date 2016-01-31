@@ -13,7 +13,7 @@ class Entity {
 
     Vec4 position;
     Vec4 scale;
-    Vec4 qrotation;
+    Mat4 rotation;
 
 
     Entity(GL::Mesh *mesh, GL::Texture *texture);

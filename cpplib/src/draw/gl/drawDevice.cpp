@@ -115,7 +115,7 @@ void DrawDevice::runMeshProgram(Mesh *mesh, Texture *tex, const Mat4 &mv) {
     simpleProgram->bind();
     mesh->bind();
     bindStandardAttributes(simpleProgram);
-    Mat4 f = Mat4::createFrustumMatrix(-1, 1, -1, 1, 2, 100);
+    Mat4 f = Mat4::createFrustumMatrix(-1, 1, -1, 1, 2, 1000);
     f = f * mv;
     glUniformMatrix4fv(glGetUniformLocation(simpleProgram->program, "mvp"),
                         1, GL_TRUE, f.ptr());

@@ -6,9 +6,11 @@
 #include "draw/gl/mdl.hpp"
 #include "draw/tga.hpp"
 #include "common/file.hpp"
+#include "math/random.hpp"
 
 #include <SDL/SDL.h>
 #include <unistd.h>
+#include <math.h>
 
 using GL::DrawDevice;
 
@@ -23,6 +25,22 @@ bool running = true;
 
 Vec4 player_vector; // normalized position vector
 Vec4 player_forward;
+
+Vec4 randomUnitVector() {
+    return Vec4((RandomFloat() - 0.5) * M_PI * 4.0f, 
+                (RandomFloat() - 0.5) * M_PI * 4.0f, 
+                (RandomFloat() - 0.5) * M_PI * 4.0f, 0).normalized();
+}
+
+Mat4 randomBasisFromUpVector(const Vec4 &up) {
+    Vec4 fwd = randomUnitVector().orth(up).normalized();
+    Vec4 side = fwd.cross(up).normalized();
+    Mat4 mat;
+    mat.setXVector(side);
+    mat.setYVector(up.normalized());
+    mat.setZVector(fwd);
+    return mat;
+}
 
 void init() {
     window = new SDLWindow(960, 720, "ggj2016");
@@ -39,8 +57,15 @@ void init() {
 
     //moon = scene->addEntity("moon");
     planet = scene->addEntity("planet");
-    scene->addEntity("plant");
     planet->scale = Vec4(100, 100, 100);
+
+    for(int i = 0; i < 100; i++) {
+        Entity *plant = scene->addEntity("plant");
+        Vec4 up = randomUnitVector();
+        plant->position = up.scaled(100.f);
+        plant->rotation = randomBasisFromUpVector(up);
+        plant->scale = Vec4(2, 2, 2);
+    }
 
     player_vector = Vec4(0, 1, 0, 0);
     player_forward = Vec4(0, 0, 1, 0);
@@ -68,12 +93,18 @@ void input() {
         player_forward.normalize();
     }
 
+    if(keystate[SDLK_DOWN]) {
+        player_vector += player_forward.scaled(0.007);
+        player_vector.normalize();
+        player_forward = player_forward.orth(player_vector);
+        player_forward.normalize();
+    }
+
     if(keystate[SDLK_LEFT]) {
         Mat4 rot;
         rot.rotate(-0.05, player_vector);
         player_forward = rot.mul(player_forward);
         player_forward.normalize();
-        player_forward.print();
     }
 
     if(keystate[SDLK_RIGHT]) {
@@ -81,7 +112,6 @@ void input() {
         rot.rotate(0.05, player_vector);
         player_forward = rot.mul(player_forward);
         player_forward.normalize();
-        player_forward.print();
     }
 }
 

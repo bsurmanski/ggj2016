@@ -36,8 +36,12 @@ GL::Texture *Scene::getTexture(const String &k) {
 }
 
 Entity *Scene::addEntity(const String &k) {
-    GL::Mesh *m = meshes.at(k);
-    GL::Texture *t = textures.at(k);
+    return addEntity(k, k);
+}
+
+Entity *Scene::addEntity(const String &mk, const String &tk) {
+    GL::Mesh *m = meshes.at(mk);
+    GL::Texture *t = textures.at(tk);
     Entity *e = new Entity(m, t);
     entities.push_back(e);
     return e;
@@ -77,10 +81,10 @@ void loadScn(Scene *s, Input *in) {
         Entity *entity = s->addEntity(name);
         entity->position = Vec4(ent.position[0], ent.position[1], ent.position[2], 1.0f);
         entity->scale = Vec4(ent.scale[0], ent.scale[1], ent.scale[2]);
-        entity->qrotation = Vec4(ent.rotation[0],
+        entity->rotation = Vec4(ent.rotation[0],
                                  ent.rotation[1],
                                  ent.rotation[2],
-                                 ent.rotation[3]);
+                                 ent.rotation[3]).qToMat();
     }
 }
 
