@@ -393,14 +393,22 @@ void draw() {
     window->SwapBuffers();
 }
 
+void tick() {
+    input();
+    update();
+    draw();
+}
+
 int main(int argc, char **argv) {
     init();
 
+#ifdef __EMSCRIPTEN__
+    emscripten_set_main_loop(tick, 0, 1);
+#else
     while(running) {
-        input();
-        update();
-        draw();
+        tick();
         usleep(10);
     }
+#endif
     return 0;
 }

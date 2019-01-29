@@ -1,13 +1,13 @@
-#version 330
-//#extension GL_ARB_uniform_buffer_object : enable
-#extension GL_ARB_explicit_attrib_location : require
+#version 300 es
+//#extension GL_ARB_explicit_attrib_location : require
+precision highp float;
 
 uniform mat4 mvpMatrix;
 uniform mat4 mMatrix;
 
-layout(location = 0) in vec3 position;
-layout(location = 1) in vec3 normal;
-layout(location = 2) in vec2 uv;
+in vec3 position;
+in vec3 normal;
+in vec2 uv;
 
 smooth out vec4 fnormal;
 smooth out vec4 fposition;

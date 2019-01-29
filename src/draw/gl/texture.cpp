@@ -74,13 +74,13 @@ bool Texture::isDepthStencil() {
 
 RGBATexture::RGBATexture(int w, int h) : Texture(w, h) {
     glBindTexture(GL_TEXTURE_2D, id);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h,
         0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 }
 
 RGBATexture::RGBATexture(const Image *img) : Texture(img->getWidth(), img->getHeight()) {
     glBindTexture(GL_TEXTURE_2D, id);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h, 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, w, h,
         0, GL_RGBA, GL_UNSIGNED_BYTE, img->getPixelPtr());
 }
 
@@ -97,7 +97,7 @@ bool RGBATexture::isRGBA8() {
 
 DepthTexture::DepthTexture(int w, int h) : Texture(w, h) {
     glBindTexture(GL_TEXTURE_2D, id);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, w, h, 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32F, w, h,
         0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 }
 
@@ -107,7 +107,7 @@ bool DepthTexture::isDepth() {
 
 DepthStencilTexture::DepthStencilTexture(int w, int h) : Texture(w, h) {
     glBindTexture(GL_TEXTURE_2D, id);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, w, h, 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH24_STENCIL8, w, h,
         0, GL_DEPTH_STENCIL, GL_FLOAT, NULL);
 }
 

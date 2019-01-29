@@ -1,4 +1,5 @@
-#version 330
+#version 300 es
+precision highp float;
 
 in vec2 texco;
 uniform sampler2D tex;

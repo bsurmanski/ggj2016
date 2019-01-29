@@ -1,4 +1,6 @@
-#version 330
+#version 300 es
+precision highp float;
+
 in vec4 position;
 in vec2 uv;
 

@@ -1,6 +1,6 @@
-#version 330
-//#extension GL_ARB_uniform_buffer_object : enable
-#extension GL_ARB_explicit_attrib_location : require
+#version 300 es
+//#extension GL_ARB_explicit_attrib_location : require
+precision highp float;
 
 //smooth in vec4 fcolor;
 smooth in vec4 fposition;
@@ -17,7 +17,7 @@ layout(location = 3) out vec4 outLight; // mess!
 
 void main()
 {
-    outColor = vec4(1); //texture(t_color, fuv);
+    outColor = texture(t_color, fuv);
     outNormal = fnormal;
     outPosition = fposition;
     outLight = ambient;

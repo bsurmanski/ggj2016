@@ -42,6 +42,8 @@ web:
 	em++ $(SRC) -Isrc --std=c++11 -o bin/web/index.html \
 		-s USE_SDL=2 -s USE_SDL_MIXER=2 \
 		-s USE_OGG=1 \
-		-s TOTAL_MEMORY=67108864 \
+		-s USE_WEBGL2=1 \
+		-s ALLOW_MEMORY_GROWTH=1 \
 		-s WASM=1 \
-		--preload-file res
+		--preload-file res -g
+		#-s TOTAL_MEMORY=67108864 \

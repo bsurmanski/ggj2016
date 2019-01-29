@@ -1,4 +1,5 @@
-#version 330
+#version 300 es
+precision highp float;
 
 in vec2 fuv; 
 uniform sampler2D t_day;

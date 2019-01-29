@@ -1,4 +1,5 @@
-#version 330
+#version 300 es
+precision highp float;
 
 uniform sampler2D t_color;
 uniform sampler2D t_normal;
@@ -29,7 +30,7 @@ void main()
     float xx = x*x;
     float xxxx = xx * xx;
     float texcox = -xxxx+1.0f;
-    color = texture(t_color, vec2(fuv.x+ texcox * sin(tick * 5 + fuv.y*5)/100, fuv.y)); 
+    color = texture(t_color, vec2(fuv.x+ texcox * sin(tick * 5.0 + fuv.y * 5.0)/100.0, fuv.y)); 
     normal = texture(t_normal, fuv);
     depth = texture(t_depth, fuv);
     light = texture(t_light, fuv);
