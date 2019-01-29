@@ -7,8 +7,13 @@
 #include "program.hpp"
 #include "geom/mat.hpp"
 
+#ifndef __APPLE__
 #include <GL/glew.h>
 #include <GL/gl.h>
+#else
+#define glewInit() {}
+#include <OpenGL/gl3.h>
+#endif
 
 namespace GL {
 

@@ -4,3 +4,7 @@ cpplib/test/res
 *.o
 *.so
 .tup
+.DS_Store
+a.out
+a.out*
+bin/

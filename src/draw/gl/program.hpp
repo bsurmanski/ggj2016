@@ -3,8 +3,12 @@
 
 #include "common/input.hpp"
 
+#ifndef __APPLE__
 #include <GL/glew.h>
 #include <GL/gl.h>
+#else
+#include <OpenGL/gl3.h>
+#endif
 
 namespace GL {
 

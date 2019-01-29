@@ -17,7 +17,7 @@ DrawDevice::DrawDevice(int _w, int _h) : w(_w), h(_h) {
     glewInit();
 
     if(!instance) instance = this;
-   
+
     mainBuffer = new Framebuffer();
     colorTexture = new RGBATexture(_w/4, _h/4);
     normalTexture = new RGBATexture(_w/4, _h/4);
@@ -66,7 +66,7 @@ DrawDevice::DrawDevice(int _w, int _h) : w(_w), h(_h) {
 
     glFrontFace(GL_CW);
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glEnable(GL_TEXTURE_2D);
+    //glEnable(GL_TEXTURE_2D);
     glDisable(GL_BLEND);
     glDisable(GL_SCISSOR_TEST);
     //glEnable(GL_CULL_TEST);
@@ -126,7 +126,7 @@ void DrawDevice::runMeshProgram(Mesh *mesh, Texture *tex, const Mat4 &mv) {
     glViewport(0, 0, w/4, h/4);
     simpleProgram->bind();
     mesh->bind();
-    bindStandardAttributes(simpleProgram);
+    //bindStandardAttributes(simpleProgram);
     Mat4 f = Mat4::createFrustumMatrix(-1, 1, -1, 1, 2, 1000);
     f = f * mv;
     glUniformMatrix4fv(glGetUniformLocation(simpleProgram->program, "mvp"),
@@ -146,7 +146,7 @@ void DrawDevice::runOutputProgram(float fade) {
     f += 0.004;
     deferredProgram->bind();
     quad->bind();
-    bindStandardAttributes(deferredProgram);
+    //bindStandardAttributes(deferredProgram);
     glUniform1i(glGetUniformLocation(deferredProgram->program, "t_color"), 0);
     glUniform1i(glGetUniformLocation(deferredProgram->program, "t_normal"), 1);
     glUniform1i(glGetUniformLocation(deferredProgram->program, "t_depth"), 2);
@@ -165,7 +165,7 @@ void DrawDevice::runSkyboxProgram(Texture *day, Texture *night, const Mat4 &v, c
     glViewport(0, 0, w/4, h/4);
     skyboxProgram->bind();
     cube->bind();
-    bindStandardAttributes(skyboxProgram);
+    //bindStandardAttributes(skyboxProgram);
     Mat4 p_matrix = Mat4::createFrustumMatrix(-1, 1, -1, 1, 2, 1000);
     Mat4 v_matrix = v;
     glUniformMatrix4fv(glGetUniformLocation(skyboxProgram->program, "p_matrix"),
@@ -186,7 +186,7 @@ void DrawDevice::runTitleProgram(Texture *title, Texture *space, float tick) {
     space->bind(1);
     glViewport(0, 0, w/4, h/4);
     titleProgram->bind();
-    bindStandardAttributes(titleProgram);
+    //bindStandardAttributes(titleProgram);
     glUniform1i(glGetUniformLocation(titleProgram->program, "t_title"), 0);
     glUniform1i(glGetUniformLocation(titleProgram->program, "t_space"), 1);
     glUniform1f(glGetUniformLocation(titleProgram->program, "tick"), tick);

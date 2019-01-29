@@ -1,8 +1,8 @@
-#version 130
+#version 330
 in vec4 position;
 in vec2 uv;
 
-smooth out vec2 fuv;
+out vec2 fuv;
 
 void main()
 {

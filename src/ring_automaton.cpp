@@ -9,7 +9,7 @@ RingAutomaton::RingAutomaton(const int width, const int height)
   // Seed the random number generator to ensure it's seeded at least once...
   srand(time(0));
   // Start the grid from a clean slate.
-  ClearGrid();  
+  ClearGrid();
 }
 
 void RingAutomaton::RandomState() {
@@ -85,6 +85,7 @@ Vec4 RingAutomaton::GetCellSphereCoordinate(const int x, const int y) const {
 }
 
 int RingAutomaton::GetCellFromSphereCoords(Vec4 v) const {
+    return 0;
 }
 
 int RingAutomaton::GetWidth() const {

@@ -1,12 +1,11 @@
-#version 130
+#version 330
 
 uniform sampler2D t_color;
 uniform sampler2D t_normal;
 uniform sampler2D t_depth;
 uniform sampler2D t_light;
 
-smooth in vec2 fuv;
-
+in vec2 fuv;
 out vec4 outColor;
 
 uniform float tick;
@@ -18,10 +17,11 @@ vec4 normal;
 vec4 depth;
 vec4 light;
 
+/*
 vec4 applyLighting(vec4 c, vec4 l)
 {
     return vec4((vec3(l) * vec3(c)) + vec3(l.a), 1.0);    
-}
+} */
 
 void main()
 {
@@ -35,4 +35,5 @@ void main()
     light = texture(t_light, fuv);
     
     outColor = color + fade; //applyLighting(color, light);
+    //outColor = vec4(1.0, 1.0, 1.0, 1.0);
 }

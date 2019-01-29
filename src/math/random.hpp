@@ -5,6 +5,8 @@
 
 class RNG {
     public:
+    RNG(){}
+    virtual ~RNG() {};
     virtual void seed(uint32_t seed) = 0;
     virtual uint32_t getInt() = 0;
     uint32_t getIntBelow(uint32_t max);
@@ -14,7 +16,7 @@ class RNG {
     float getGuassian(float mu, float sigma);
 };
 
-class MerseneTwisterRNG : public RNG {
+class MerseneTwisterRNG : public virtual RNG {
     uint32_t *_MT;
     int _index;
     uint32_t _genmask[2];

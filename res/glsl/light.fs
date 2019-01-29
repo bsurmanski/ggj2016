@@ -1,4 +1,4 @@
-#version 130
+#version 330
 
 uniform sampler2D t_normal;
 uniform sampler2D t_position;

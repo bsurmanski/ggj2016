@@ -1,4 +1,4 @@
-#version 130
+#version 330
 
 in vec3 position;
 in vec3 normal;
@@ -7,8 +7,8 @@ in vec2 uv;
 uniform mat4 v_matrix;
 uniform mat4 p_matrix;
 
-smooth out vec3 eye;
-smooth out vec2 fuv;
+out vec3 eye;
+out vec2 fuv;
 
 void main(void) {
     eye = (v_matrix * vec4(position, 1.0f)).xyz;

@@ -1,10 +1,10 @@
-#version 130
+#version 330
 
 in vec3 position;
 in vec3 normal;
 in vec2 uv;
 
-smooth out vec2 fuv;
+out vec2 fuv;
 
 void main(void) {
     gl_Position = vec4(position, 1.0f);

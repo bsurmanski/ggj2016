@@ -1,8 +1,12 @@
 #ifndef _DRAW_GL_MESH_HPP
 #define _DRAW_GL_MESH_HPP
 
+#ifndef __APPLE__
 #include <GL/glew.h>
 #include <GL/gl.h>
+#else
+#include <OpenGL/gl3.h>
+#endif
 #include <stdint.h>
 
 namespace GL {
@@ -34,6 +38,8 @@ struct Edge {
 class Mesh {
     GLuint ibo;
     GLuint vbo;
+    GLuint vao;
+
     int nelems;
 
     public:

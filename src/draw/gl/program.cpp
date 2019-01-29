@@ -71,6 +71,12 @@ StdProgram::StdProgram(Input *vs, Input *fs) {
 
 	glAttachShader(program, vso);
 	glAttachShader(program, fso);
+
+    glBindAttribLocation(program, 0, "position");
+    glBindAttribLocation(program, 1, "normal");
+    glBindAttribLocation(program, 2, "uv");
+    glBindAttribLocation(program, 3, "color");
+
     glLinkProgram(program);
 
     if(programHasLinkErrors(program)) {

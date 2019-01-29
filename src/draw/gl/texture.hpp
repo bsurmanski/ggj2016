@@ -1,8 +1,12 @@
 #ifndef _DRAW_GL_TEXTURE_HPP
 #define _DRAW_GL_TEXTURE_HPP
 
+#ifndef __APPLE__
 #include <GL/glew.h>
 #include <GL/gl.h>
+#else
+#include <OpenGL/gl3.h>
+#endif
 
 #include "draw/tga.hpp"
 #include "draw/image.hpp"

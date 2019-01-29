@@ -10,8 +10,17 @@
 
 #include "ring_automaton.hpp"
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_mixer.h>
+#include <SDL2/SDL.h>
+#ifdef __APPLE__
+#include <SDL2_mixer/SDL_mixer.h>
+#else
+#include <SDL2/SDL_mixer.h>
+#endif
+
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+#endif
+
 #include <unistd.h>
 #include <math.h>
 
@@ -63,8 +72,8 @@ std::vector<std::vector<bool>> GOL_spaceship = {
 #define MOON_ORBIT2 180
 
 Vec4 randomUnitVector() {
-    return Vec4((RandomFloat() - 0.5) * M_PI * 4.0f, 
-                (RandomFloat() - 0.5) * M_PI * 4.0f, 
+    return Vec4((RandomFloat() - 0.5) * M_PI * 4.0f,
+                (RandomFloat() - 0.5) * M_PI * 4.0f,
                 (RandomFloat() - 0.5) * M_PI * 4.0f, 0).normalized();
 }
 
@@ -161,7 +170,7 @@ void init() {
     planet = scene->addEntity("planet");
     planet->scale = Vec4(100, 100, 100);
 
-    ship = scene->addEntity("ship"); 
+    ship = scene->addEntity("ship");
     ship->position = Vec4(0, -100, 0);
     ship->rotation = Mat4();
     ship->rotation.rotate(M_PI, Vec4(1, 0, 0));
@@ -205,55 +214,55 @@ void input() {
         }
     }
 
-    uint8_t *keystate = SDL_GetKeyState(NULL);
+    const uint8_t *keystate = SDL_GetKeyboardState(NULL);
 
-    static int spaceDownCount = 0; 
-    if(keystate[SDLK_SPACE]) {
+    static int spaceDownCount = 0;
+    if(keystate[SDL_SCANCODE_SPACE]) {
         spaceDownCount++;
     } else {
         spaceDownCount = 0;
     }
 
     if(state == TITLE) {
-        if(keystate[SDLK_SPACE]) {
+        if(keystate[SDL_SCANCODE_SPACE]) {
             Mix_PlayChannelTimed(-1, Mix_LoadWAV("res/startGame.wav"), 0, -1);
             Mix_PlayChannelTimed(-1, music, -1, -1);
             state = GAME;
         }
     } else if(state == GAME) {
-        if(keystate[SDLK_SPACE] && spaceDownCount == 1) {
+        if(keystate[SDL_SCANCODE_SPACE] && spaceDownCount == 1) {
             running = false;
         }
 
-        if(keystate[SDLK_UP]) {
+        if(keystate[SDL_SCANCODE_UP]) {
             player_vector -= player_forward.scaled(0.010);
             player_vector.normalize();
             player_forward = player_forward.orth(player_vector);
             player_forward.normalize();
         }
 
-        if(keystate[SDLK_DOWN]) {
+        if(keystate[SDL_SCANCODE_DOWN]) {
             player_vector += player_forward.scaled(0.007);
             player_vector.normalize();
             player_forward = player_forward.orth(player_vector);
             player_forward.normalize();
         }
 
-        if(keystate[SDLK_LEFT]) {
+        if(keystate[SDL_SCANCODE_LEFT]) {
             Mat4 rot;
             rot.rotate(-0.05, player_vector);
             player_forward = rot.mul(player_forward);
             player_forward.normalize();
         }
 
-        if(keystate[SDLK_RIGHT]) {
+        if(keystate[SDL_SCANCODE_RIGHT]) {
             Mat4 rot;
             rot.rotate(0.05, player_vector);
             player_forward = rot.mul(player_forward);
             player_forward.normalize();
         }
     } else if(state == END) {
-        if(keystate[SDLK_SPACE] && spaceDownCount == 1) {
+        if(keystate[SDL_SCANCODE_SPACE] && spaceDownCount == 1) {
             running = false;
         }
     }
@@ -267,7 +276,7 @@ void update() {
     if(state ==END) {
         if(everyOneDies) {
             if(death == NULL) {
-                death = scene->addEntity("death"); 
+                death = scene->addEntity("death");
                 death->position = Vec4(-100, -100, -100);
                 death->rotation = Mat4();
                 death->rotation.rotate(M_PI, Vec4(1, 0, 0));
@@ -303,11 +312,11 @@ void update() {
             life->Poll();
         }
 
-        moon1->position = Vec4(MOON_ORBIT1 * cos((tick+20) / 401.0f), 
+        moon1->position = Vec4(MOON_ORBIT1 * cos((tick+20) / 401.0f),
                               sin((tick+20) / 97.0f) * 5.0f,
                               MOON_ORBIT1 * sin((tick+20) / 401.0f));
 
-        moon2->position = Vec4(MOON_ORBIT2 * cos(tick/ 301.0f), 
+        moon2->position = Vec4(MOON_ORBIT2 * cos(tick/ 301.0f),
                               sin(tick / 47.0f) * 5.0f,
                               MOON_ORBIT2 * sin(tick / 301.0f));
 
@@ -369,9 +378,9 @@ void draw() {
                     mmat = stableBasisFromUpVector(p);
                     mmat.translate(p.scaled(100));
                     drawDevice->runMeshProgram(scene->getMesh("tree"),
-                                               scene->getTexture("tree"), 
+                                               scene->getTexture("tree"),
                                                vmat * mmat);
-                    
+
             //plant->position = up.scaled(100.f);
             //plant->rotation = randomBasisFromUpVector(up);
             //plant->scale = Vec4(2, 2, 2);
@@ -386,7 +395,7 @@ void draw() {
 
 int main(int argc, char **argv) {
     init();
-    
+
     while(running) {
         input();
         update();
